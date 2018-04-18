@@ -61,7 +61,7 @@ spec:
   client_sent_start_timestamp: response.time
   client_sent_end_timestamp: response.time
   api_claims: # from jwt
-    encoded_claims: request.headers["sec-istio-auth-userinfo"] | ""
+    encoded_claims: request.auth.claims | ""
 ---
 # instance configuration for template 'apigee.authorization'
 apiVersion: config.istio.io/v1alpha2
@@ -75,7 +75,7 @@ spec:
     groups: ""
     properties:
       api_key: request.api_key | request.headers["x-api-key"] | ""
-      encoded_claims: request.headers["sec-istio-auth-userinfo"] | ""
+      encoded_claims: request.auth.claims | ""
   action:
     namespace: destination.namespace | "default"
     service: api.service | destination.service | ""
@@ -93,7 +93,7 @@ spec:
     api: api.service | destination.service | ""
     path: request.path | ""
     api_key: request.api_key | request.headers["x-api-key"] | ""
-    encoded_claims: request.headers["sec-istio-auth-userinfo"] | ""
+    encoded_claims: request.auth.claims | ""
 ---
 # Deny any request with header 'sec-istio-auth-userinfo'
 apiVersion: "config.istio.io/v1alpha2"
